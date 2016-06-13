@@ -2,10 +2,12 @@
 
 Creative Commons CC0 1.0 License 2016, Erin Osborne Nishimura
 
-##### VERSION  
+##### VERSION
+
     1
 
-##### AUTHOR  
+##### AUTHOR
+
     Erin Osborne Nishimura
     
 ##### DATE 
