@@ -2,13 +2,16 @@
 
 Creative Commons CC0 1.0 License 2016, Erin Osborne Nishimura
 
-VERSION:       1
+*VERSION:*
+    1
 
-AUTHOR:       Erin Osborne Nishimura
+*AUTHOR:*
+    Erin Osborne Nishimura
+    
+*DATE:*
+    June 13, 2016         
 
-DATE:         June 13, 2016         
-
-PURPOSE:
+*PURPOSE:*
        A very basic wrapper to merge together replicates of wig files by averaging across conditions in batch.
 
 USAGE:
