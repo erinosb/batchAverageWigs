@@ -35,9 +35,9 @@ A very basic wrapper to merge together replicates of wig files by averaging acro
 
 ##### OUTPUT
 ```
-1) NAME_avg.bw -- averaged bw files  
+1) NAME_avg.bw            -- averaged bw files  
 2) DATE_avg_bw_tracks.log -- a .txt file of custom track descriptions  
-3) NAME_avg.wig -- averaged .wig files, if -w option is called.
+3) NAME_avg.wig           -- averaged .wig files, if -w option is called.
 ```
      
 ##### EXAMPLE
@@ -47,7 +47,7 @@ A very basic wrapper to merge together replicates of wig files by averaging acro
 
 ##### REQUIREMENTS
 Requires [java-genomics-toolkit](https://github.com/timpalpant/java-genomics-toolkit)  
-Requires the ucsc genome utility wigToBigWig available as a stand-alone utility in the [UCSC Kent Utilities](http://hgdownload.soe.ucsc.edu/admin/exe/)  
+Requires wigToBigWig that is available as a stand-alone utility in the [UCSC Kent Utilities](http://hgdownload.soe.ucsc.edu/admin/exe/)  
 
 ##### KNOWN BUGS
 
