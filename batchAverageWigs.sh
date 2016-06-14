@@ -47,7 +47,7 @@
 #     
 ###### EXAMPLE
 #```
-#./batchAverageWigs.sh -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt  
+#./batchAverageWigs.sh -o testfiles/outdir -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt  
 #```
 #
 ###### REQUIREMENTS
@@ -81,7 +81,7 @@ OPTIONS
 
 
 EXAMPLE
-    ./batchAverageWigs.sh -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt
+    ./batchAverageWigs.sh -o testfiles/outdir -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt 
     
 REQUIRES
     Requires [java-genomics-toolkit](https://github.com/timpalpant/java-genomics-toolkit)  
@@ -196,15 +196,11 @@ do
         fi
     done
     
-    #get base directory
-    #echo "Elemeent match array is" ${matcharray[@]}
-    dirname="$(dirname ${matcharray[0]})"
-    #dirname=${matcharray[0]%/*}
-    #echo "dirname is " $dirname
+    #Set the name of the averaged output file:
     pathbase=${outdir}"/"${i}
-    pathbase=$pathbase"_average.wig"
-    echo "pathbase is "$pathbase
-    #echo "matcharray is " ${matcharray[@]}
+    pathbase=$pathbase"_avg.wig"
+    
+    #Perform wigmath.Average
     echo "Averaging files from ${matcharray[@]} into $pathbase..."
     cmd1="toolRunner.sh wigmath.Average -o $pathbase -f ${matcharray[@]}"
     echo -e "\t$cmd1"
@@ -212,12 +208,11 @@ do
     
     #Compress average.wig to .bw
     echo "Compressing .wig to .bw file..."
-    cmd2="wigToBigWig $pathbase $2 ${outdir}/${i}_average.bw "
+    cmd2="wigToBigWig $pathbase $2 ${outdir}/${i}_avg.bw "
     echo -e "\t$cmd2"
     $cmd2
     
     #Gather information for a trackfile
-    #track type=bigWig name="My Big Wig" description="A Graph of Data from My Lab" bigDataUrl=http://myorg.edu/mylab/myBigWig.bw
     description=
     for n in ${matcharray[@]}
     do
@@ -227,9 +222,9 @@ do
         description+="$base"
     done
     
-    #Get trackfile info
+    #Set trackfile info
     description=${description/#_/}
-    urlinfo="bigDataUrl=$uppath/${i}_average.bw"
+    urlinfo="bigDataUrl=$uppath/${i}_avg.bw"
     
     #Write a trackfile
     echo "Writing trackfile..."
@@ -239,7 +234,7 @@ do
     if [ keepWigs = "FALSE" ]
     then
         echo "REMOVING temporary .wig file..."
-        rm ${outdir}/${i}_average.wig
+        rm ${outdir}/${i}_avg.wig
     fi
     
     #Clean up temp files

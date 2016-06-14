@@ -17,8 +17,11 @@ A very basic wrapper to merge together replicates of wig files by averaging acro
 ##### USAGE
 ```
 ./batchAverageWigs [options] metafile.txt chromfile.txt  
-    -u | --uppath       URL address to provide to UCSC genome browser specifying the ftp/http address of the final .bw file  
-    -w | --keepWigs     An option to retain the temporary NAME_avg.wig files. Default will delete these files and retain only .bw files  
+    -M | --Maxview      An option to specify maximum view height in the custom track info. Default is 20.
+    -m | --minview      An option to specify minimum view height in the custom track info. Default is 0.
+    -o | --outpath      An output directory. Default is to sent output to the local directory.
+    -u | --uppath       URL address to provide to UCSC genome browser specifying the ftp/http address of the final .bw file
+    -w | --keepWigs     An option to retain the temporary NAME_avg.wig files. Default will delete these files and retain only .bw files
 ```
 
 ##### INPUT
@@ -42,15 +45,22 @@ A very basic wrapper to merge together replicates of wig files by averaging acro
      
 ##### EXAMPLE
 ```
-./batchAverageWigs.sh -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt  
+./batchAverageWigs.sh -o testfiles/outdir -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt 
 ```
 
 ##### REQUIREMENTS
 Requires [java-genomics-toolkit](https://github.com/timpalpant/java-genomics-toolkit)  
-Requires wigToBigWig that is available as a stand-alone utility in the [UCSC Kent Utilities](http://hgdownload.soe.ucsc.edu/admin/exe/)  
+Requires wigToBigWig that is available as a stand-alone utility in the [UCSC Kent Utilities](http://hgdownload.soe.ucsc.edu/admin/exe/)
+
+##### TESTING
+To test batchAverageWigs.sh, execute the following code from within the main directory:
+```
+./batchAverageWigs.sh -o testfiles/outdir -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt 
+```
+Check that the contents of testfiles/outdir match the content of testfiles/reference. The date on the logfiles is different, but the content of the files should be the same.
 
 ##### KNOWN BUGS
 
 ##### FUTURE EXTENSION
-Add an option to put the track info in the metadata file
+Add an option to put additional track info in the metadata file
 
