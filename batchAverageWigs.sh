@@ -18,7 +18,7 @@
 #
 ###### USAGE
 #```
-#./batchAverageWigs [options] metafile.txt chromfile.txt  
+#./batchAverageWigs.sh [options] metafile.txt chromfile.txt  
     #-M | --Maxview      An option to specify maximum view height in the custom track info. Default is 20.
     #-m | --minview      An option to specify minimum view height in the custom track info. Default is 0.
     #-o | --outpath      An output directory. Default is to sent output to the local directory.
