@@ -12,7 +12,10 @@ Erin Osborne Nishimura
 June 13, 2016         
 
 ##### PURPOSE  
-A very basic wrapper to merge together replicates of wig files by averaging across conditions in batch.
+A very basic wrapper to merge together replicates of wig files by averaging across conditions in batch. Does the following...
+  1. Merges .wig files into an average .wig file
+  2. Comparesses the .wig file into a .bw file
+  3. Writes a track log file that contains custom track information for uploading to UCSC Genome browser
 
 ##### USAGE
 ```
