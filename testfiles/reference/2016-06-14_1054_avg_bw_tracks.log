@@ -1,0 +1,2 @@
+track type=bigWig name="ABpl" description="st225_test_st226_test" maxHeightPixels=100:100:11 autoScale=off viewLimits=-1:6 visibility=2 color=0,0,255 bigDataUrl=http://home/path/ABpl_average.bw type=bigWig
+track type=bigWig name="P3" description="st227_test_st228_test" maxHeightPixels=100:100:11 autoScale=off viewLimits=-1:6 visibility=2 color=0,0,255 bigDataUrl=http://home/path/P3_average.bw type=bigWig

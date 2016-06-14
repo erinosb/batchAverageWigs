@@ -19,16 +19,19 @@
 ###### USAGE
 #```
 #./batchAverageWigs [options] metafile.txt chromfile.txt  
-#    -u | --uppath       URL address to provide to UCSC genome browser specifying the ftp/http address of the final .bw file  
-#    -w | --keepWigs     An option to retain the temporary NAME_avg.wig files. Default will delete these files and retain only .bw files  
+    #-M | --Maxview      An option to specify maximum view height in the custom track info. Default is 20.
+    #-m | --minview      An option to specify minimum view height in the custom track info. Default is 0.
+    #-o | --outpath      An output directory. Default is to sent output to the local directory.
+    #-u | --uppath       URL address to provide to UCSC genome browser specifying the ftp/http address of the final .bw file
+    #-w | --keepWigs     An option to retain the temporary NAME_avg.wig files. Default will delete these files and retain only .bw files
 #```
 #
 ###### INPUT
 #```
 #1) metafile.txt --> a tab-delimited text file (.txt) that lists the replicate .wig files and their conditions  
 #    Example:  
-#        ../03_OUTPUT/st225_test.wig	ABpl  
-#        ../03_OUTPUT/st226_test.wig	ABpl  
+#        ./testfiles/st225_test.wig	ABpl  
+#        ./testfiles/st226_test.wig	ABpl  
 #2) chromfile.txt --> a chromosome length file  
 #    Requires chromosome length file. downloaded from: <http://hgdownload.cse.ucsc.edu/downloads.html>   
 #    Example, for ce10 c. elegans: <http://hgdownload.cse.ucsc.edu/goldenPath/ce10/bigZips/ce10.chrom.sizes>  
@@ -55,8 +58,6 @@
 #
 ###### FUTURE EXTENSION
 #Add an option to put the track info in the metadata file
-#Add an option for color
-#Add an option for height
 #Add an optin for outpath
 ####################################################################################
 
@@ -69,11 +70,15 @@ batchAverageWigs.sh
     Version 1.0; Erin Osborne Nishimura
 
 USAGE
-    ./batchAverageWigs [options] metafile.txt chromfile.txt 
+    ./batchAverageWigs.sh [options] metafile.txt chromfile.txt 
 
 OPTIONS
+    -M | --Maxview      An option to specify maximum view height in the custom track info. Default is 20.
+    -m | --minview      An option to specify minimum view height in the custom track info. Default is 0.
+    -o | --outpath      An output directory. Default is to sent output to the local directory.
     -u | --uppath       URL address to provide to UCSC genome browser specifying the ftp/http address of the final .bw file
     -w | --keepWigs     An option to retain the temporary NAME_avg.wig files. Default will delete these files and retain only .bw files
+
 
 EXAMPLE
     ./batchAverageWigs.sh -u http://home/path testfiles/metadata_test.txt testfiles/chr_length_ce10.txt
@@ -97,6 +102,9 @@ fi
 #Get options
 uppath=
 keepWigs="FALSE"
+Max=20
+min=0
+outdir="."
 
 for n in $@
 do
@@ -109,31 +117,46 @@ do
         -w | --keepWigs) shift;
         keepwigs="TRUE";
         ;;
+        -M | --Maxview) shift;
+        Max=$1;
+        shift;
+        ;;
+        -m | --minview) shift;
+        min=$1;
+        shift;
+        ;;
+        -o | --outpath) shift;
+        outdir=$1;
+        shift;
+        ;;
         esac
     done
     
 
 #Require two arguments, else die:    
-if [ -z "$2" ]
-then
+if [ -z "$2" ]; then
     echo -e "ERROR: Expecting arguments"
     echo -e "$usage"  
     exit
 fi
 
-if [ ! -f $1 ]
-then
+if [ ! -f $1 ]; then
     echo "ERROR: Expecting metadata file. Can't open $1"
     echo -e "$usage"  
     exit
 fi
 
-if [ ! -f $2 ]
-then
+if [ ! -f $2 ]; then
     echo "ERROR: Expecting chromosome length file. Can't open $2"
     echo -e "$usage"  
     exit
 fi
+
+#Unless it exists, make an output directory
+if [ ! -d $outdir ]; then
+    mkdir $outdir
+fi
+
 
 ############################
 # Get files and conditions
@@ -144,7 +167,7 @@ cell=($(cut -f 2 $1))
 
 #Start a track file
 DATE=$(date +"%Y-%m-%d_%H%M")
-dated_track=${DATE}_avg_bw_tracks.log
+dated_track=${outdir}/${DATE}_avg_bw_tracks.log
 
 
 ############################
@@ -178,9 +201,9 @@ do
     dirname="$(dirname ${matcharray[0]})"
     #dirname=${matcharray[0]%/*}
     #echo "dirname is " $dirname
-    pathbase=${dirname}"/"${i}
+    pathbase=${outdir}"/"${i}
     pathbase=$pathbase"_average.wig"
-    #echo "pathbase is "$pathbase
+    echo "pathbase is "$pathbase
     #echo "matcharray is " ${matcharray[@]}
     echo "Averaging files from ${matcharray[@]} into $pathbase..."
     cmd1="toolRunner.sh wigmath.Average -o $pathbase -f ${matcharray[@]}"
@@ -189,7 +212,7 @@ do
     
     #Compress average.wig to .bw
     echo "Compressing .wig to .bw file..."
-    cmd2="wigToBigWig $pathbase $2 ${dirname}/${i}_average.bw "
+    cmd2="wigToBigWig $pathbase $2 ${outdir}/${i}_average.bw "
     echo -e "\t$cmd2"
     $cmd2
     
@@ -210,13 +233,13 @@ do
     
     #Write a trackfile
     echo "Writing trackfile..."
-    echo "track type=bigWig name=\"$i\" description=\"$description\" maxHeightPixels=100:100:11 autoScale=off viewLimits=0:6 visibility=2 color= $urlinfo type=bigWig" | tee -a $dated_track 
+    echo "track type=bigWig name=\"$i\" description=\"$description\" maxHeightPixels=100:100:11 autoScale=off viewLimits=${min}:${Max} visibility=2 color=0,0,255 $urlinfo type=bigWig" | tee -a $dated_track 
     
     #Remove .wig files unless specified
     if [ keepWigs = "FALSE" ]
     then
         echo "REMOVING temporary .wig file..."
-        rm ${dirname}/${i}_average.wig
+        rm ${outdir}/${i}_average.wig
     fi
     
     #Clean up temp files

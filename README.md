@@ -25,8 +25,8 @@ A very basic wrapper to merge together replicates of wig files by averaging acro
 ```
 1) metafile.txt --> a tab-delimited text file (.txt) that lists the replicate .wig files and their conditions  
     Example:  
-        ../03_OUTPUT/st225_test.wig	ABpl  
-        ../03_OUTPUT/st226_test.wig	ABpl  
+        ./testfiles/st225_test.wig	ABpl  
+        ./testfiles/st226_test.wig	ABpl  
 2) chromfile.txt --> a chromosome length file  
     Requires chromosome length file. downloaded from: <http://hgdownload.cse.ucsc.edu/downloads.html>   
     Example, for ce10 c. elegans: <http://hgdownload.cse.ucsc.edu/goldenPath/ce10/bigZips/ce10.chrom.sizes>  

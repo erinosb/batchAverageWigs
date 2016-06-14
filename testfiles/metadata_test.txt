@@ -1,0 +1,4 @@
+./testfiles/st225_test.wig	ABpl
+./testfiles/st226_test.wig	ABpl
+./testfiles/st227_test.wig	P3
+./testfiles/st228_test.wig	P3
